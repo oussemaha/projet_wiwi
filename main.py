@@ -13,7 +13,7 @@ api = Api(
     title="Research Management System API",
     version="1.0",
     description="A comprehensive API for managing researchers, faculties, laboratories, and publications.",
-    doc="/docs"  # Swagger UI path
+    doc="/"  # Swagger UI path
 )
 
 # Register namespaces
