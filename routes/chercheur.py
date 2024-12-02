@@ -101,3 +101,22 @@ class Chercheur(Resource):
         cursor.close()
         connection.close()
         return {"message": "Chercheur deleted successfully"}, 204
+
+@api.route('/laboratoire/<int:labno>/chercheurs')
+@api.param('labno', 'The ID of the laboratory')
+class ChercheurByLaboratoire(Resource):
+    @api.doc('get_chercheurs_by_laboratoire')
+    def get(self, labno):
+        """Fetch a list of chercheurs for a given laboratory ID"""
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM CHERCHEUR WHERE labno = %s", (labno,))
+        chercheurs = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        if not chercheurs:
+            api.abort(404, "No chercheurs found for this laboratory ID")
+
+        return jsonify([list(chercheur) for chercheur in chercheurs])
+
